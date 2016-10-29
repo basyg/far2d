@@ -1,5 +1,6 @@
 package renderer;
 
+import flash.display3D.Context3DVertexBufferFormat;
 import openfl.geom.Matrix;
 
 @:allow(renderer)
@@ -8,11 +9,15 @@ class Renderer {
 	public var width:Int;
 	public var height:Int;
 	
-	var _context:RendererContext = null;
+	var _context:RendererContext;
+	var b1:RendererVertexIdBuffer;
+	var b2:RendererVertexBuffer;
 
 	public function new(width:Int, height:Int) {
 		setSize(width, height);
 		_context = new RendererContext();
+		b1 = _context.createVertexIdBuffer();
+		b2 = _context.createVertexBuffer([Context3DVertexBufferFormat.FLOAT_2]);
 	}
 	
 	public function setSize(width:Int, height:Int) {
