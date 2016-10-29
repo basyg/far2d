@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<application xmlns="http://ns.adobe.com/air/application/18.0">
+	
+	<id>meshes-stage3d-air</id> 
+	<versionNumber>1.0</versionNumber> 
+	<filename>meshes-stage3d-air</filename> 
+	
+	<name>meshes-stage3d-air</name> 
+	<description></description> 
+	<copyright></copyright> 
+	
+	<initialWindow> 
+		<title>meshes-stage3d-air</title> 
+		<content>meshes-stage3d-air.swf</content> 
+		<renderMode>direct</renderMode> 
+		<systemChrome>standard</systemChrome> 
+		<transparent>false</transparent> 
+		<visible>true</visible> 
+		<minimizable>true</minimizable> 
+		<maximizable>true</maximizable> 
+		<resizable>true</resizable> 
+	</initialWindow> 
+	
+	<!-- 
+	More options:
+	http://livedocs.adobe.com/flex/3/html/File_formats_1.html#1043413
+	-->
+</application>
