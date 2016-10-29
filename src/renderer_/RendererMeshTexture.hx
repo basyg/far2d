@@ -1,6 +1,6 @@
 package renderer;
 
-import flash.Vector;
+import openfl.Vector;
 
 class RendererMeshTexture {
 	

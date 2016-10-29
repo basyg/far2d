@@ -1,10 +1,13 @@
 package;
 
-class Main {
+import openfl.display.Sprite;
+
+class Main extends Sprite {
 	
 	static var _app:App;
 	
-	static function main():Void {
+	public function new ():Void {
+		super();
 		_app = new App();
 	}
 	

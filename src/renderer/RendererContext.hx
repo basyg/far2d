@@ -1,25 +1,25 @@
 package renderer;
 
-import flash.Lib;
-import flash.display.Stage3D;
-import flash.display3D.Context3D;
-import flash.display3D.Context3DBlendFactor;
-import flash.display3D.Context3DProfile;
-import flash.display3D.Context3DRenderMode;
-import flash.display3D.Context3DTriangleFace;
-import flash.display3D.Program3D;
-import flash.display3D.textures.TextureBase;
-import flash.events.Event;
+import openfl.Lib;
+import openfl.display.Stage3D;
+import openfl.display3D.Context3D;
+import openfl.display3D.Context3DBlendFactor;
+import openfl.display3D.Context3DProfile;
+import openfl.display3D.Context3DRenderMode;
+import openfl.display3D.Context3DTriangleFace;
+import openfl.display3D.Program3D;
+import openfl.display3D.textures.TextureBase;
+import openfl.events.Event;
 
 class RendererContext {
 	
-	static var AGAL_VERSIONS:Map<String, Int> = [
-	cast(Context3DProfile.BASELINE_CONSTRAINED, String) => 1,
-		cast(Context3DProfile.BASELINE, String) => 1,
-		cast(Context3DProfile.BASELINE_EXTENDED, String) => 1,
-		cast(Context3DProfile.STANDARD_CONSTRAINED, String) => 2,
-		cast(Context3DProfile.STANDARD, String) => 2,
-		cast(Context3DProfile.STANDARD_EXTENDED, String) => 3,
+	static var AGAL_VERSIONS:Map<Context3DProfile, Int> = [
+		Context3DProfile.BASELINE_CONSTRAINED => 1,
+		Context3DProfile.BASELINE => 1,
+		Context3DProfile.BASELINE_EXTENDED => 1,
+		Context3DProfile.STANDARD_CONSTRAINED => 2,
+		Context3DProfile.STANDARD => 2,
+		//cast(Context3DProfile.STANDARD_EXTENDED, String) => 3,
 	];
 	
 	static var VERTEX_PROGRAM_CONSTANTS_N:Map<Int, Int> = [
@@ -54,7 +54,7 @@ class RendererContext {
 	public function new() {
 		stage3d = Lib.current.stage.stage3Ds[0];
 		stage3d.addEventListener(Event.CONTEXT3D_CREATE, handleContext3dCreate);
-		stage3d.requestContext3D(cast(Context3DRenderMode.AUTO, String), Context3DProfile.STANDARD);
+		stage3d.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.STANDARD);
 	}
 	
 	function handleContext3dCreate(e:Event):Void {
@@ -76,6 +76,7 @@ class RendererContext {
 			maxFragmentUniformsN = -1;
 		}
 		else {
+			trace('Context3D.profile: ${Std.string(context3d.profile)}');
 			if (!AGAL_VERSIONS.exists(context3d.profile)) {
 				throw 'Unknown Context3DProfile: ${context3d.profile}';
 			}

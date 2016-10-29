@@ -1,12 +1,12 @@
 package renderer;
 
-import flash.display.BitmapData;
-import flash.display3D.Context3D;
-import flash.display3D.Context3DTextureFormat;
-import flash.display3D.textures.Texture;
-import flash.display3D.textures.TextureBase;
-import flash.geom.Point;
-import flash.geom.Rectangle;
+import openfl.display.BitmapData;
+import openfl.display3D.Context3D;
+import openfl.display3D.Context3DTextureFormat;
+import openfl.display3D.textures.Texture;
+import openfl.display3D.textures.TextureBase;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 class RendererTexture {
 	

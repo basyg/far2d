@@ -1,24 +1,24 @@
 package renderer;
 
-import flash.Memory;
-import flash.Vector;
-import flash.display.BitmapData;
-import flash.display3D.Context3D;
-import flash.display3D.Context3DBlendFactor;
-import flash.display3D.Context3DBufferUsage;
-import flash.display3D.Context3DProfile;
-import flash.display3D.Context3DProgramType;
-import flash.display3D.Context3DTriangleFace;
-import flash.display3D.Context3DVertexBufferFormat;
-import flash.display3D.IndexBuffer3D;
-import flash.display3D.Program3D;
-import flash.display3D.VertexBuffer3D;
-import flash.display3D.textures.TextureBase;
-import flash.errors.Error;
-import flash.geom.Matrix;
-import flash.system.ApplicationDomain;
-import flash.utils.ByteArray;
-import flash.utils.Endian;
+import openfl.Memory;
+import openfl.Vector;
+import openfl.display.BitmapData;
+import openfl.display3D.Context3D;
+import openfl.display3D.Context3DBlendFactor;
+import openfl.display3D.Context3DBufferUsage;
+import openfl.display3D.Context3DProfile;
+import openfl.display3D.Context3DProgramType;
+import openfl.display3D.Context3DTriangleFace;
+import openfl.display3D.Context3DVertexBufferFormat;
+import openfl.display3D.IndexBuffer3D;
+import openfl.display3D.Program3D;
+import openfl.display3D.VertexBuffer3D;
+import openfl.display3D.textures.TextureBase;
+import openfl.errors.Error;
+import openfl.geom.Matrix;
+import openfl.system.ApplicationDomain;
+import openfl.utils.ByteArray;
+import openfl.utils.Endian;
 import renderer.renderBatches;
 
 @:allow(renderer)

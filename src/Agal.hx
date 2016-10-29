@@ -1,8 +1,8 @@
 package;
 
 import com.adobe.utils.extended.AGALMiniAssembler;
-import flash.display3D.Context3DProgramType;
-import flash.utils.ByteArray;
+import openfl.display3D.Context3DProgramType;
+import openfl.utils.ByteArray;
 
 abstract Agal(Array<String>) {
 	

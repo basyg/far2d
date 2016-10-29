@@ -1,6 +1,6 @@
 package;
 
-import flash.Vector;
+import openfl.Vector;
 
 abstract IntIdPool(Vector<Int>) {
 

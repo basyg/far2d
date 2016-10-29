@@ -1,7 +1,7 @@
 package mesh;
 
-import flash.display.BitmapData;
-import flash.utils.ByteArray;
+import openfl.display.BitmapData;
+import openfl.utils.ByteArray;
 import haxe.Json;
 import meshData.MeshAtlasData;
 
@@ -11,9 +11,9 @@ class Meshes {
 	public var atlasTextureData(default, null):BitmapData;
 
 	public function new() {
-		var atlasData:MeshAtlasData = Json.parse(new AtlasJson().toString());
-		atlas = new MeshAtlas(atlasData);
-		atlasTextureData = new AtlasPng(0, 0);
+		//var atlasData:MeshAtlasData = Json.parse(new AtlasJson().toString());
+		//atlas = new MeshAtlas(atlasData);
+		//atlasTextureData = new AtlasPng(0, 0);
 	}
 	
 	public function update(dt:Float):Void {
@@ -22,8 +22,8 @@ class Meshes {
 	
 }
 
-@:bitmap('../assets/meshs.png') 
-private class AtlasPng extends BitmapData { }
-
-@:file('../assets/meshs.json') 
-private class AtlasJson extends ByteArray { }
+//@:bitmap('../assets/meshs.png') 
+//private class AtlasPng extends BitmapData { }
+//
+//@:file('../assets/meshs.json') 
+//private class AtlasJson extends ByteArray { }

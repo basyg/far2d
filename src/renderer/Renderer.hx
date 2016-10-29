@@ -1,6 +1,6 @@
 package renderer;
 
-import flash.geom.Matrix;
+import openfl.geom.Matrix;
 
 @:allow(renderer)
 class Renderer {

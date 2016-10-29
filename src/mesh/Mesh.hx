@@ -1,6 +1,6 @@
 package mesh;
 
-import flash.Vector;
+import openfl.Vector;
 import meshData.MeshData;
 import meshData.MeshDataTriangle;
 import meshData.MeshDataVector;
