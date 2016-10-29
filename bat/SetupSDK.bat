@@ -4,7 +4,7 @@ cd %~dp0 & cd ..
 :user_configuration
 
 :: Path to Flex SDK
-set FLEX_SDK=C:\Users\Denis\AppData\Local\FlashDevelop\Apps\ascsdk\23.0.0
+set FLEX_SDK=C:\Users\denis_basygysov\AppData\Local\FlashDevelop\Apps\ascsdk\23.0.0
 
 :validation
 if not exist "%FLEX_SDK%\bin" goto flexsdk
