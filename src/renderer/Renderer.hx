@@ -1,7 +1,13 @@
 package renderer;
 
 import haxe.ds.Vector;
+import openfl.display3D.Context3DProgramType;
+import openfl.display3D.Context3DVertexBufferFormat;
+import openfl.display3D.IndexBuffer3D;
+import openfl.display3D.Program3D;
+import openfl.display3D.VertexBuffer3D;
 import openfl.geom.Matrix;
+import openfl.utils.AGALMiniAssembler;
 
 @:allow(renderer)
 class Renderer {
@@ -72,6 +78,11 @@ class Renderer {
 		command.set(name, a, b, c, d, tx, ty, red, green, blue, alpha);
 	}
 	
+	var ib:IndexBuffer3D = null;
+	var vb:VertexBuffer3D = null;
+	var p:Program3D = null;
+	var u:openfl.Vector<Float> = null;
+	
 	public function end():Void {
 		if (!_context.isInitialized) {
 			return;
@@ -79,6 +90,33 @@ class Renderer {
 		
 		_context.setBackbufferSize(Std.int(_width), Std.int(_height));
 		_context.context3d.clear(0.0, 0.0, 1.0, 1.0);
+		
+		var c = _context.context3d;
+		if (ib == null) {
+			ib = c.createIndexBuffer(3);
+			vb = c.createVertexBuffer(3, 2);
+			p = c.createProgram();
+			
+			ib.uploadFromVector(openfl.Vector.ofArray([(0:UInt), 1, 2]), 0, 3);
+			vb.uploadFromVector(openfl.Vector.ofArray([0.5, 0.0, 1.0, 0.5, 0.0, 1.0]), 0, 3);
+			
+			var as = new AGALMiniAssembler(true);
+			var vp = as.assemble(Context3DProgramType.VERTEX, [
+				'add v0 va0 vc0',
+				'mov op va0',
+			].join('\n'));
+			var fp = as.assemble(Context3DProgramType.FRAGMENT, [
+				'mov oc, v0',
+			].join('\n'));
+			p.upload(vp, fp);
+			u = openfl.Vector.ofArray([0.0, 0.0, 0.0, 1.0]);
+		}
+		
+		c.setVertexBufferAt(0, vb, 0, Context3DVertexBufferFormat.FLOAT_2);
+		c.setProgram(p);
+		c.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 0, u, 1);
+		c.drawTriangles(ib, 0, 1);
+		
 		_context.context3d.present();
 		
 		_commandsCount = 0;
