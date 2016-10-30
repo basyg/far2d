@@ -117,7 +117,7 @@ class RendererContext {
 			}
 			
 			for (vertexBuffer in vertexBuffers) {
-				vertexBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTICES_N, vertexBuffer.samplersSize, Context3DBufferUsage.DYNAMIC_DRAW);
+				vertexBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTICES_N, vertexBuffer.samplersFourbytesCount, Context3DBufferUsage.DYNAMIC_DRAW);
 			}
 		}
 		
@@ -160,8 +160,7 @@ class RendererContext {
 					
 					for (samplerFormat in vertexBuffer.samplers) {
 						context3d.setVertexBufferAt(samplerIndex++, vertexBuffer.vertexBuffer3D, bufferOffset, samplerFormat);
-						var formatSize = RendererVertexBuffer.sizeOfSamplerFormat(samplerFormat);
-						bufferOffset += formatSize;
+						bufferOffset += RendererVertexBuffer.fourbytesCountOfSamplerFormat(samplerFormat);
 					}
 				}
 				if (_vertexBuffer != null) {

@@ -7,11 +7,11 @@ import openfl.utils.Endian;
 class RendererMesh {
 	
 	static public inline var INDICES_COUNT_IN_TRIANGLE:Int = 3;
-	static public inline var FLOATS_COUNT_IN_VERTEX:Int = 2;
+	static public inline var FOURBYTES_COUNT_IN_VERTEX:Int = 2;
 	
 	public var name(default, null):String;
-	public var trianglesN(default, null):Int;
-	public var verticesN(default, null):Int;
+	public var trianglesCount(default, null):Int;
+	public var verticesCount(default, null):Int;
 	public var triangles(default, null):ByteArray;
 	public var vertices(default, null):ByteArray;
 	
@@ -21,13 +21,13 @@ class RendererMesh {
 
 	public function new(name:String, triangleIndices:Vector<UInt>, vertex2dPositions:Vector<Float>, textureName:String, xInTexture:Float, yInTexture:Float) {
 		this.name = name;
-		trianglesN = Math.floor(triangleIndices.length / INDICES_COUNT_IN_TRIANGLE);
-		verticesN = Math.floor(vertex2dPositions.length / FLOATS_COUNT_IN_VERTEX);
+		trianglesCount = Math.floor(triangleIndices.length / INDICES_COUNT_IN_TRIANGLE);
+		verticesCount = Math.floor(vertex2dPositions.length / FOURBYTES_COUNT_IN_VERTEX);
 		
-		if (trianglesN * INDICES_COUNT_IN_TRIANGLE != triangleIndices.length) {
+		if (trianglesCount * INDICES_COUNT_IN_TRIANGLE != triangleIndices.length) {
 			throw 'Invalid indices count in mesh "$name"';
 		}
-		if (verticesN * FLOATS_COUNT_IN_VERTEX != vertex2dPositions.length) {
+		if (verticesCount * FOURBYTES_COUNT_IN_VERTEX != vertex2dPositions.length) {
 			throw 'Invalid vertices count in mesh "$name"';
 		}
 		
