@@ -21,8 +21,8 @@ class RendererMesh {
 
 	public function new(name:String, triangleIndices:Vector<UInt>, vertex2dPositions:Vector<Float>, textureName:String, xInTexture:Float, yInTexture:Float) {
 		this.name = name;
-		this.trianglesN = Math.floor(triangleIndices.length / INDICES_COUNT_IN_TRIANGLE);
-		this.verticesN = Math.floor(vertex2dPositions.length / FLOATS_COUNT_IN_VERTEX);
+		trianglesN = Math.floor(triangleIndices.length / INDICES_COUNT_IN_TRIANGLE);
+		verticesN = Math.floor(vertex2dPositions.length / FLOATS_COUNT_IN_VERTEX);
 		
 		if (trianglesN * INDICES_COUNT_IN_TRIANGLE != triangleIndices.length) {
 			throw 'Invalid indices count in mesh "$name"';
@@ -31,16 +31,16 @@ class RendererMesh {
 			throw 'Invalid vertices count in mesh "$name"';
 		}
 		
-		this.triangles = new ByteArray();
-		this.triangles.endian = Endian.LITTLE_ENDIAN;
+		triangles = new ByteArray();
+		triangles.endian = Endian.LITTLE_ENDIAN;
 		for (index in triangleIndices) {
-			this.triangles.writeShort(index);
+			triangles.writeShort(index);
 		}
 		
-		this.vertices = new ByteArray();
-		this.vertices.endian = Endian.LITTLE_ENDIAN;
+		vertices = new ByteArray();
+		vertices.endian = Endian.LITTLE_ENDIAN;
 		for (float in vertex2dPositions) {
-			this.vertices.writeFloat(float);
+			vertices.writeFloat(float);
 		}
 		
 		this.textureName = textureName;
