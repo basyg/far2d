@@ -16,7 +16,8 @@ import openfl.events.Event;
 
 class RendererContext {
 	
-	static public inline var MAX_VERTICES_N:Int = 0xFFFF;
+	static public inline var MAX_INDEX_BUFFER_SIZE:Int = 0xF0000;
+	static public inline var MAX_VERTEX_BUFFER_SIZE:Int = 0xFFFF;
 	
 	static var AGAL_VERSIONS:Map<Context3DProfile, Int> = [
 		Context3DProfile.BASELINE_CONSTRAINED => 1,
@@ -47,11 +48,13 @@ class RendererContext {
 	public var maxVertexUniformsN(default, null):Int = -1;
 	public var maxFragmentUniformsN(default, null):Int = -1;
 	
-	@:allow(renderer) var vertexIdBuffers:Array<RendererVertexIdBuffer> = [];
-	@:allow(renderer) var vertexBuffers:Array<RendererVertexBuffer> = [];
+	var _indexBuffers:Array<RendererIndexBuffer> = [];
+	var _vertexIdBuffers:Array<RendererVertexIdBuffer> = [];
+	var _vertexBuffers:Array<RendererVertexBuffer> = [];
 	
 	var _backBufferWidth:Int = -1;
 	var _backBufferHeight:Int = -1;
+	var _indexBuffer:Null<RendererIndexBuffer> = null;
 	var _vertexIdBuffer:Null<RendererVertexIdBuffer> = null;
 	var _vertexBuffer:Null<RendererVertexBuffer> = null;
 	var _program:Null<Program3D> = null;
@@ -85,14 +88,21 @@ class RendererContext {
 			maxVertexUniformsN = -1;
 			maxFragmentUniformsN = -1;
 			
-			for (vertexIdBuffer in vertexIdBuffers) {
+			for (indexBuffer in _indexBuffers) {
+				if (indexBuffer.indexBuffer3D != null) {
+					indexBuffer.indexBuffer3D.dispose();
+					indexBuffer.indexBuffer3D = null;
+				}
+			}
+			
+			for (vertexIdBuffer in _vertexIdBuffers) {
 				if (vertexIdBuffer.vertexBuffer3D != null) {
 					vertexIdBuffer.vertexBuffer3D.dispose();
 					vertexIdBuffer.vertexBuffer3D = null;
 				}
 			}
 			
-			for (vertexBuffer in vertexBuffers) {
+			for (vertexBuffer in _vertexBuffers) {
 				if (vertexBuffer.vertexBuffer3D != null) {
 					vertexBuffer.vertexBuffer3D.dispose();
 					vertexBuffer.vertexBuffer3D = null;
@@ -112,12 +122,16 @@ class RendererContext {
 			maxVertexUniformsN = VERTEX_PROGRAM_CONSTANTS_N[agalVersion];
 			maxFragmentUniformsN = FRAGMENT_PROGRAM_CONSTANTS_N[agalVersion];
 			
-			for (vertexIdBuffer in vertexIdBuffers) {
-				vertexIdBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTICES_N, 1, Context3DBufferUsage.DYNAMIC_DRAW);
+			for (indexBuffer in _indexBuffers) {
+				indexBuffer.indexBuffer3D = context3d.createIndexBuffer(MAX_INDEX_BUFFER_SIZE, Context3DBufferUsage.DYNAMIC_DRAW);
 			}
 			
-			for (vertexBuffer in vertexBuffers) {
-				vertexBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTICES_N, vertexBuffer.samplersFourbytesCount, Context3DBufferUsage.DYNAMIC_DRAW);
+			for (vertexIdBuffer in _vertexIdBuffers) {
+				vertexIdBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTEX_BUFFER_SIZE, 1, Context3DBufferUsage.DYNAMIC_DRAW);
+			}
+			
+			for (vertexBuffer in _vertexBuffers) {
+				vertexBuffer.vertexBuffer3D = context3d.createVertexBuffer(MAX_VERTEX_BUFFER_SIZE, vertexBuffer.samplersFourbytesCount, Context3DBufferUsage.DYNAMIC_DRAW);
 			}
 		}
 		
@@ -191,52 +205,64 @@ class RendererContext {
 		}
 	}
 	
-	public function createVertexIdBuffer():RendererVertexIdBuffer {
-		var vertexIdBuffer = new RendererVertexIdBuffer(this);
-		vertexIdBuffers.push(vertexIdBuffer);
-		return vertexIdBuffer;
+	public function createIndexBuffer():RendererIndexBuffer {
+		var buffer = new RendererIndexBuffer(this);
+		_indexBuffers.push(buffer);
+		return buffer;
 	}
 	
-	public function disposeVertexIdBuffer(vertexIdBuffer:RendererVertexIdBuffer):Void {
-		if (vertexIdBuffer.context == null) {
-			'RendererVertexIdBuffer is already disposed';
+	public function disposeIndexBuffer(buffer:RendererIndexBuffer):Void {
+		if (buffer.indexBuffer3D != null) {
+			buffer.indexBuffer3D.dispose();
+			buffer.indexBuffer3D = null;
 		}
+		buffer.context = null;
 		
-		if (vertexIdBuffer.vertexBuffer3D != null) {
-			vertexIdBuffer.vertexBuffer3D.dispose();
-			vertexIdBuffer.vertexBuffer3D = null;
+		var index = _indexBuffers.indexOf(buffer);
+		var last = _indexBuffers.pop();
+		if (last != buffer) {
+			_indexBuffers[index] = last;
 		}
+	}
+	
+	public function createVertexIdBuffer():RendererVertexIdBuffer {
+		var buffer = new RendererVertexIdBuffer(this);
+		_vertexIdBuffers.push(buffer);
+		return buffer;
+	}
+	
+	public function disposeVertexIdBuffer(buffer:RendererVertexIdBuffer):Void {
+		if (buffer.vertexBuffer3D != null) {
+			buffer.vertexBuffer3D.dispose();
+			buffer.vertexBuffer3D = null;
+		}
+		buffer.context = null;
 		
-		var index = vertexIdBuffers.indexOf(vertexIdBuffer);
-		var last = vertexIdBuffers.pop();
-		if (last != vertexIdBuffer) {
-			vertexIdBuffers[index] = last;
+		var index = _vertexIdBuffers.indexOf(buffer);
+		var last = _vertexIdBuffers.pop();
+		if (last != buffer) {
+			_vertexIdBuffers[index] = last;
 		}
-		vertexIdBuffer.context = null;
 	}
 	
 	public function createVertexBuffer(samplers:Array<Context3DVertexBufferFormat>):RendererVertexBuffer {
-		var vertexBuffer = new RendererVertexBuffer(this, samplers);
-		vertexBuffers.push(vertexBuffer);
-		return vertexBuffer;
+		var buffer = new RendererVertexBuffer(this, samplers);
+		_vertexBuffers.push(buffer);
+		return buffer;
 	}
 	
-	public function disposeVertexBuffer(vertexBuffer:RendererVertexBuffer):Void {
-		if (vertexBuffer.context == null) {
-			'RendererVertexBuffer is already disposed';
+	public function disposeVertexBuffer(buffer:RendererVertexBuffer):Void {
+		if (buffer.vertexBuffer3D != null) {
+			buffer.vertexBuffer3D.dispose();
+			buffer.vertexBuffer3D = null;
 		}
+		buffer.context = null;
 		
-		if (vertexBuffer.vertexBuffer3D != null) {
-			vertexBuffer.vertexBuffer3D.dispose();
-			vertexBuffer.vertexBuffer3D = null;
+		var index = _vertexBuffers.indexOf(buffer);
+		var last = _vertexBuffers.pop();
+		if (last != buffer) {
+			_vertexBuffers[index] = last;
 		}
-		
-		var index = vertexBuffers.indexOf(vertexBuffer);
-		var last = vertexBuffers.pop();
-		if (last != vertexBuffer) {
-			vertexBuffers[index] = last;
-		}
-		vertexBuffer.context = null;
 	}
 	
 }
