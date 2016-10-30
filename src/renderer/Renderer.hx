@@ -58,8 +58,8 @@ class Renderer {
 		
 		var halfWidth = width / 2;
 		var halfHeight = height / 2;
-		var scaleX = 1 / (width / 2);
-		var scaleY = -1 / (height / 2);
+		var scaleX = 1 / halfWidth;
+		var scaleY = -1 / halfHeight;
 		
 		a = a * scaleX;
 		b = b * scaleY;
@@ -83,4 +83,5 @@ class Renderer {
 		
 		_commandsCount = 0;
 	}
+	
 }
