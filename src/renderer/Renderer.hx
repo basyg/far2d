@@ -6,13 +6,15 @@ import openfl.geom.Matrix;
 @:allow(renderer)
 class Renderer {
 	
-	public var width:Float;
-	public var height:Float;
+	public var width:Int;
+	public var height:Int;
 	
 	public var cache:RendererCache = new RendererCache();
 	
-	var _context:RendererContext;
+	var _width:Single = 0.0;
+	var _height:Single = 0.0;
 	
+	var _context:RendererContext;
 	var _commands:Vector<RendererCommand>;
 	var _commandsCount:Int = 0;
 
@@ -21,7 +23,6 @@ class Renderer {
 		this.height = height;
 		
 		_context = new RendererContext();
-		
 		_commands = new Vector(512);
 		for (i in 0..._commands.length) {
 			_commands[i] = new RendererCommand();
@@ -29,13 +30,16 @@ class Renderer {
 	}
 	
 	public function begin():Void {
+		_width = width;
+		_height = height;
+		
 		if (!_context.isInitialized) {
 			return;
 		}
 	}
 	
 	var __renderMesh_matrix:Matrix = new Matrix();
-	public function renderMesh(name:String, transform:Matrix, red:Float = 1.0, green:Float = 1.0, blue:Float = 1.0, alpha:Float = 1.0):Void {
+	public function renderMesh(name:String, transform:Matrix, red:Single = 1.0, green:Single = 1.0, blue:Single = 1.0, alpha:Single = 1.0):Void {
 		if (_commands.length == _commandsCount) {
 			var commands = new Vector(_commands.length * 2);
 			Vector.blit(_commands, 0, commands, 0, _commands.length);
@@ -45,12 +49,12 @@ class Renderer {
 			_commands = commands;
 		}
 		
-		var a:Float = transform.a;
-		var b:Float = transform.b;
-		var c:Float = transform.c;
-		var d:Float = transform.d;
-		var tx:Float = transform.tx;
-		var ty:Float = transform.ty;
+		var a:Single = transform.a;
+		var b:Single = transform.b;
+		var c:Single = transform.c;
+		var d:Single = transform.d;
+		var tx:Single = transform.tx;
+		var ty:Single = transform.ty;
 		
 		var halfWidth = width / 2;
 		var halfHeight = height / 2;
@@ -73,7 +77,7 @@ class Renderer {
 			return;
 		}
 		
-		_context.setBackbufferSize(Math.ceil(width), Math.ceil(height));
+		_context.setBackbufferSize(Std.int(_width), Std.int(_height));
 		_context.context3d.clear(0.0, 0.0, 1.0, 1.0);
 		_context.context3d.present();
 		

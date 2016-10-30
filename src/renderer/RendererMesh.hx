@@ -16,8 +16,8 @@ class RendererMesh {
 	public var vertices(default, null):ByteArray;
 	
 	public var textureName(default, null):String;
-	public var xInTexture(default, null):Float;
-	public var yInTexture(default, null):Float;
+	public var xInTexture(default, null):Single;
+	public var yInTexture(default, null):Single;
 
 	public function new(name:String, triangleIndices:Vector<UInt>, vertex2dPositions:Vector<Float>, textureName:String, xInTexture:Float, yInTexture:Float) {
 		this.name = name;

@@ -4,23 +4,23 @@ class RendererCommand {
 	
 	public var meshName:Null<String> = null;
 	
-	public var a:Float = 0.0;
-	public var b:Float = 0.0;
-	public var c:Float = 0.0;
-	public var d:Float = 0.0;
-	public var tx:Float = 0.0;
-	public var ty:Float = 0.0;
+	public var a:Single = 0.0;
+	public var b:Single = 0.0;
+	public var c:Single = 0.0;
+	public var d:Single = 0.0;
+	public var tx:Single = 0.0;
+	public var ty:Single = 0.0;
 	
-	public var red:Float = 0.0;
-	public var green:Float = 0.0;
-	public var blue:Float = 0.0;
-	public var alpha:Float = 0.0;
+	public var red:Single = 0.0;
+	public var green:Single = 0.0;
+	public var blue:Single = 0.0;
+	public var alpha:Single = 0.0;
 
 	public function new() {
 		
 	}
 	
-	public inline function set(meshName:String,	a:Float, b:Float, c:Float, d:Float, tx:Float, ty:Float, red:Float, green:Float, blue:Float, alpha:Float):Void {
+	public inline function set(meshName:String,	a:Single, b:Single, c:Single, d:Single, tx:Single, ty:Single, red:Single, green:Single, blue:Single, alpha:Single):Void {
 		this.meshName = meshName;
 		
 		this.a = a;
