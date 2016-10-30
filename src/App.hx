@@ -9,6 +9,7 @@ import flash.events.Event;
 import flash.geom.Matrix;
 import flash.text.TextField;
 import haxe.Timer;
+import haxe.io.Path;
 import mesh.Meshes;
 import renderer.Renderer;
 
@@ -20,22 +21,22 @@ class App {
 	public var frameDuration(default, null):Float = 0;
 	public var statusUpdateTime(default, null):Float = 0;
 	
-	var _meshes:Meshes;
-	
 	var _stage:Stage;
-	var _status:TextField;
 	var _renderer:Renderer;
+	var _status:Null<TextField> = null;
 	
 	var _frameStartTimes:Vector<Float> = new Vector(60);
 	var _frameTimes:Vector<Float> = new Vector(60);
+	
+	var _meshes:Meshes = null;
 
 	public function new() {
-		_meshes = new mesh.Meshes();
-		
 		_stage = Lib.current.stage;
 		_stage.scaleMode = StageScaleMode.NO_SCALE;
 		_stage.align = StageAlign.TOP_LEFT;
 		_stage.frameRate = 60;
+		
+		_renderer = new Renderer(_stage.stageWidth, _stage.stageHeight);
 		
 		//_status = new TextField();
 		//_status.background = true;
@@ -43,14 +44,27 @@ class App {
 		//_status.height = 20;
 		//_stage.addChild(_status);
 		
-		_renderer = new Renderer(_stage.stageWidth, _stage.stageHeight);
+		start();
 		
 		_stage.addEventListener(Event.RESIZE, handleResize);
 		_stage.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
 	}
 	
+	function start():Void {
+		_meshes = new Meshes();
+		
+		var atlasName = Path.withoutExtension(_meshes.atlas.name);
+		_renderer.cache.addTexture(atlasName, _meshes.atlasTextureData);
+		
+		for (mesh in _meshes.atlas.meshes) {
+			var meshName = Path.withoutExtension(mesh.name);
+			_renderer.cache.addMesh(meshName, mesh.indices, mesh.vertices, atlasName, mesh.xInAtlas, mesh.yInAtlas);
+		}
+	}
+	
 	function handleResize(e:Event):Void {
-		_renderer.setSize(_stage.stageWidth, _stage.stageHeight);
+		_renderer.width = _stage.stageWidth;
+		_renderer.height = _stage.stageHeight;
 	}
 	
 	function handleEnterFrame(e:Event):Void {
@@ -83,7 +97,9 @@ class App {
 			
 			var fpsText = Math.round(fps * 10);
 			var frameTimeText = Math.round(frameTime * 10);
-			//_status.text = 'fps: $fpsText frameTime: $frameTimeText';
+			if (_status != null) {
+				_status.text = 'fps: $fpsText frameTime: $frameTimeText';
+			}
 		}
 	}
 	
@@ -107,15 +123,15 @@ class App {
 			matrix.ty += 10;
 			for (i in 0...20) {
 				matrix.tx += 10;
-				_renderer.renderMesh('objBuildAncientPoolStage1.png', matrix, 0xFFFFFF);
+				_renderer.renderMesh('objBuildAncientPoolStage1', matrix, 0xFFFFFF);
 				matrix.tx += 10;
-				_renderer.renderMesh('objBuildAncientPoolStage2.png', matrix, 0xFFFFFF);
+				_renderer.renderMesh('objBuildAncientPoolStage2', matrix, 0xFFFFFF);
 				matrix.tx += 10;
-				_renderer.renderMesh('objBuildAncientPoolStage3.png', matrix, 0xFFFFFF);
+				_renderer.renderMesh('objBuildAncientPoolStage3', matrix, 0xFFFFFF);
 				matrix.tx += 10;
-				_renderer.renderMesh('objBuildAncientPoolStage4.png', matrix, 0xFFFFFF);
+				_renderer.renderMesh('objBuildAncientPoolStage4', matrix, 0xFFFFFF);
 				matrix.tx += 10;
-				_renderer.renderMesh('objBuildAncientPoolStage5.png', matrix, 0xFFFFFF);
+				_renderer.renderMesh('objBuildAncientPoolStage5', matrix, 0xFFFFFF);
 			}
 		}
 		

@@ -143,7 +143,7 @@ class Renderer2 {
 			
 			batcher.addMesh(
 				mesh.indices, mesh.vertices,
-				nativeTexture, texture.textureData.width, texture.textureData.height,
+				nativeTexture, texture.data.width, texture.data.height,
 				meshTexture.xInTexture, meshTexture.yInTexture
 			);
 		}

@@ -1,6 +1,6 @@
 package mesh;
 
-import openfl.Vector;
+import haxe.ds.Vector;
 import meshData.MeshData;
 import meshData.MeshDataTriangle;
 import meshData.MeshDataVector;
@@ -22,7 +22,7 @@ class Mesh {
 	public var spriteWidth(default, null):Float;
 	public var spriteHeight(default, null):Float;
 	
-	public var atlasTexCoords(default, null):Vector<Float>;
+	public var uvs(default, null):Vector<Float>;
 
 	public function new(meshData:MeshData, atlasWidth:Float, atlasHeight:Float) {
 		name = meshData.filename;
@@ -40,11 +40,11 @@ class Mesh {
 		spriteWidth = meshData.spriteSourceSize.w;
 		spriteHeight = meshData.spriteSourceSize.h;
 		
-		atlasTexCoords = getTexCoords(meshData.verticesUV, atlasWidth, atlasHeight);
+		uvs = getUvs(meshData.verticesUV, atlasWidth, atlasHeight);
 	}
 	
 	static function getIndices(triangleDatum:Array<MeshDataTriangle>):Vector<UInt> {
-		var out = new Vector(triangleDatum.length * 3, true);
+		var out = new Vector(triangleDatum.length * 3);
 		for (i in 0...triangleDatum.length) {
 			var triangleData = triangleDatum[i];
 			var j = i * 3;
@@ -57,7 +57,7 @@ class Mesh {
 	}
 	
 	static function getVertices(verticesDatum:Array<MeshDataVector>):Vector<Float> {
-		var out = new Vector(verticesDatum.length * 2, true);
+		var out = new Vector(verticesDatum.length * 2);
 		for (i in 0...verticesDatum.length) {
 			var verticesData = verticesDatum[i];
 			var j = i * 2;
@@ -68,8 +68,8 @@ class Mesh {
 		return out;
 	}
 	
-	static function getTexCoords(verticesUvDatum:Array<MeshDataVector>, atlasWidth:Float, atlasHeight:Float):Vector<Float> {
-		var out = new Vector(verticesUvDatum.length * 2, true);
+	static function getUvs(verticesUvDatum:Array<MeshDataVector>, atlasWidth:Float, atlasHeight:Float):Vector<Float> {
+		var out = new Vector(verticesUvDatum.length * 2);
 		for (i in 0...verticesUvDatum.length) {
 			var verticesUvData = verticesUvDatum[i];
 			var j = i * 2;

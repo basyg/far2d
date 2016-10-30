@@ -1,4 +1,4 @@
-package renderer;
+package renderer_;
 
 import openfl.display.BitmapData;
 import openfl.display3D.Context3D;
@@ -10,13 +10,13 @@ import openfl.geom.Rectangle;
 
 class RendererTexture {
 	
-	public var textureName(default, null):String;
+	public var name(default, null):String;
 	public var textureData(default, null):BitmapData;
 	
 	var _texture(default, null):Null<Texture> = null;
 	
 	public function new(textureName:String, textureData:BitmapData) {
-		this.textureName = textureName;
+		this.name = textureName;
 		this.textureData = new BitmapData(textureData.width, textureData.height);
 		copyBitmapDataFromTo(textureData, this.textureData);
 	}

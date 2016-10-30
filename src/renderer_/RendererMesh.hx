@@ -1,4 +1,4 @@
-package renderer;
+package renderer_;
 
 import openfl.Vector;
 
@@ -11,6 +11,10 @@ class RendererMesh {
 	
 	public var verticesN(default, null):Int;
 	public var vertices(default, null):Vector<Float>;
+	
+	public var textureName(default, null):String;
+	public var xInTexture(default, null):Float;
+	public var yInTexture(default, null):Float;
 
 	public function new(meshName:String, indices:Vector<UInt>, vertices:Vector<Float>) {
 		var trianglesN = Math.floor(indices.length / 3);

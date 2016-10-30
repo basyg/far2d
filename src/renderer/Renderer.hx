@@ -9,20 +9,19 @@ class Renderer {
 	public var width:Int;
 	public var height:Int;
 	
+	public var cache:RendererCache = new RendererCache();
+	
 	var _context:RendererContext;
 	var b1:RendererVertexIdBuffer;
 	var b2:RendererVertexBuffer;
 
 	public function new(width:Int, height:Int) {
-		setSize(width, height);
+		this.width = width;
+		this.height = height;
+		
 		_context = new RendererContext();
 		b1 = _context.createVertexIdBuffer();
 		b2 = _context.createVertexBuffer([Context3DVertexBufferFormat.FLOAT_2]);
-	}
-	
-	public function setSize(width:Int, height:Int) {
-		this.width = width;
-		this.height = height;
 	}
 	
 	public function begin():Void {
