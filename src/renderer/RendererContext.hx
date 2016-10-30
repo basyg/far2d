@@ -1,16 +1,16 @@
 package renderer;
 
-import openfl.display3D.Context3DBufferUsage;
 import openfl.Lib;
 import openfl.display.Stage3D;
 import openfl.display3D.Context3D;
 import openfl.display3D.Context3DBlendFactor;
+import openfl.display3D.Context3DBufferUsage;
 import openfl.display3D.Context3DProfile;
+import openfl.display3D.Context3DProgramType;
 import openfl.display3D.Context3DRenderMode;
 import openfl.display3D.Context3DTriangleFace;
 import openfl.display3D.Context3DVertexBufferFormat;
 import openfl.display3D.Program3D;
-import openfl.display3D.VertexBuffer3D;
 import openfl.display3D.textures.TextureBase;
 import openfl.events.Event;
 
@@ -146,6 +146,22 @@ class RendererContext {
 			_backBufferWidth = width;
 			_backBufferHeight = height;
 		}
+	}
+	
+	public function setVertexUniforms(uniforms:RendererUniforms):Void {
+		if (!isInitialized) {
+			return;
+		}
+		
+		context3d.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 0, uniforms, uniforms.getRegistersCount());
+	}
+	
+	public function setFragmentUniforms(uniforms:RendererUniforms):Void {
+		if (!isInitialized) {
+			return;
+		}
+		
+		context3d.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, uniforms, uniforms.getRegistersCount());
 	}
 	
 	public function setState(
